@@ -10,7 +10,7 @@ red = []
 green = []
 blue = []
 
-for i in range (9):
+for i in range (1):
     red.append([0]*16)
     green.append([0]*16)
     blue.append([0]*16)
@@ -38,8 +38,8 @@ from tinkerforge.ip_connection import IPConnection
 from tinkerforge.bricklet_led_strip import BrickletLEDStrip
 
 def fOn():
-    for i in range (9):
-            ls.set_rgb_values(i*10, NUM_LEDS, red[i], green[i], blue[i])
+    for i in range (1):
+            ls.set_rgb_values((i+9)*10, NUM_LEDS, red[i], green[i], blue[i])
 
 def setCord(fx,fanzahl,fy1,fy2,fy3,fy4,fy5,fy6,fy7,fy8,fy9,fy10):
     global x
@@ -91,17 +91,8 @@ def setColor(fr,fg,fb):
 def xLine(x):
      setCord(x,10,1,2,3,4,5,6,7,8,9,10)
 
-def yLine(y):
-    for i in range (9):
-        setCord(i+1,1,y,0,0,0,0,0,0,0,0,0)
-
-def sym(x,anzahl,y2,y3,y4,y5,y6,y7,y8,y9):
-    if x != 5:
-        setCord(x,anzahl,y2,y3,y4,y5,y6,y7,y8,y9,0,0)
-    setCord(10-x,anzahl,y2,y3,y4,y5,y6,y7,y8,y9,0,0)
-                
 def fClear():
-    for i in range(9):
+    for i in range(1):
         setColor(0,0,0)
         xLine(i+1)
 
@@ -116,7 +107,7 @@ def fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b):
 
     for y in range (anzahl):
     
-        if g_index % 2==1:
+        if g_index % 2==0:
             r_index = Ys[y]-1
         else:
             r_index = 10-Ys[y]
@@ -124,6 +115,34 @@ def fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b):
         red[g_index-1][r_index] = r
         green[g_index-1][r_index] = g
         blue[g_index-1][r_index] = b
+
+def putDot(y):
+    setCord(1,1,y,0,0,0,0,0,0,0,0,0)
+
+def showPuls(puls):
+    if puls >= 128:
+        putDot(9)
+        puls -= 128
+    if puls >= 64:
+        putDot(8)
+        puls -= 64
+    if puls >= 32:
+        putDot(7)
+        puls -= 32
+    if puls >= 16:
+        putDot(6)
+        puls -= 16
+    if puls >= 8:
+        putDot(5)
+        puls -= 8
+    if puls >= 4:
+        putDot(4)
+        puls -= 4
+    if puls >= 2:
+        putDot(3)
+        puls -= 2
+    if puls >= 1:
+        putDot(2)
 
 if __name__ == "__main__":
     ipcon = IPConnection()
@@ -138,72 +157,29 @@ if __name__ == "__main__":
   
     ls.register_callback(ls.CALLBACK_FRAME_RENDERED,
                          lambda w: fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b))
-    
-    setColor(255,255,255)
-    yLine(1)
-    yLine(10)
 
-    fOn()
+    setColor(255,255,255)
+
+    putDot(1)
+    putDot(10)
 
     while True:
-        while puls != 0:        
-            setColor(255,0,0)
-            sym(2,2,6,7,0,0,0,0,0,0)
-            sym(3,4,5,6,7,8,0,0,0,0)
-            sym(4,4,4,5,6,7,0,0,0,0)
-            sym(5,4,3,4,5,6,0,0,0,0)
-            
-            setColor(100,10,10)
-            sym(1,2,6,7,0,0,0,0,0,0)
-            sym(2,2,5,8,0,0,0,0,0,0)
-            sym(3,2,4,9,0,0,0,0,0,0)
-            sym(4,2,3,8,0,0,0,0,0,0)
-            sym(5,2,2,7,0,0,0,0,0,0)
-
+        while puls != 0:
+            setColor(2,255,55)
+            showPuls(puls)   
             fOn()
-
-            sleep(60.0/puls-0.25)
-
-            setColor(100,10,10)
-            sym(2,2,6,7,0,0,0,0,0,0)
-            sym(3,4,5,6,7,8,0,0,0,0)
-            sym(4,4,4,5,6,7,0,0,0,0)
-            sym(5,4,3,4,5,6,0,0,0,0)
-            
-            setColor(255,0,0)
-            sym(1,2,6,7,0,0,0,0,0,0)
-            sym(2,2,5,8,0,0,0,0,0,0)
-            sym(3,2,4,9,0,0,0,0,0,0)
-            sym(4,2,3,8,0,0,0,0,0,0)
-            sym(5,2,2,7,0,0,0,0,0,0)
-
-            fOn()
-
+            setColor(0,0,0)
+            showPuls(puls)
 ##            puls messen
-            
-            if puls > 220:
-                puls = 0
-
-        setColor(255,255,255)
-        yLine(1)
-        yLine(10)
-        setColor(12,100,200)
-        sym(1,2,2,9,0,0,0,0,0,0)
-        sym(2,4,2,3,8,9,0,0,0,0)
-        sym(3,4,3,4,7,8,0,0,0,0)
-        sym(4,4,4,5,6,7,0,0,0,0)
-        sym(5,2,5,6,0,0,0,0,0,0)
-        fOn()
-        
+            sleep(1)
         while puls == 0:
-            sleep(0.001)
-            
+            setColor(255,2,55)
+            xLine(1)  
+            fOn()
+            setColor(0,0,0)
+            xLine(1)
 ##            puls messen
 
-        fClear()
-        setColor(255,255,255)
-        yLine(1)
-        yLine(10)
 
     raw_input("Press key to exit\n")
     ipcon.disconnect()

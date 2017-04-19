@@ -10,7 +10,7 @@ red = []
 green = []
 blue = []
 
-for i in range (9):
+for i in range (20):
     red.append([0]*16)
     green.append([0]*16)
     blue.append([0]*16)
@@ -38,7 +38,7 @@ from tinkerforge.ip_connection import IPConnection
 from tinkerforge.bricklet_led_strip import BrickletLEDStrip
 
 def fOn():
-    for i in range (9):
+    for i in range (20):
             ls.set_rgb_values(i*10, NUM_LEDS, red[i], green[i], blue[i])
 
 def setCord(fx,fanzahl,fy1,fy2,fy3,fy4,fy5,fy6,fy7,fy8,fy9,fy10):
@@ -92,16 +92,11 @@ def xLine(x):
      setCord(x,10,1,2,3,4,5,6,7,8,9,10)
 
 def yLine(y):
-    for i in range (9):
+    for i in range (20):
         setCord(i+1,1,y,0,0,0,0,0,0,0,0,0)
-
-def sym(x,anzahl,y2,y3,y4,y5,y6,y7,y8,y9):
-    if x != 5:
-        setCord(x,anzahl,y2,y3,y4,y5,y6,y7,y8,y9,0,0)
-    setCord(10-x,anzahl,y2,y3,y4,y5,y6,y7,y8,y9,0,0)
-                
+               
 def fClear():
-    for i in range(9):
+    for i in range(20):
         setColor(0,0,0)
         xLine(i+1)
 
@@ -125,6 +120,17 @@ def fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b):
         green[g_index-1][r_index] = g
         blue[g_index-1][r_index] = b
 
+def fCube (x,y):
+    setCord(x,6,y+3,y+4,y+5,y+6,y+7,y+8,0,0,0,0)
+    setCord(x+1,3,y+2,y+7,y+8,0,0,0,0,0,0,0)
+    setCord(x+2,3,y+1,y+6,y+8,0,0,0,0,0,0,0)
+    setCord(x+3,7,y,y+1,y+2,y+3,y+4,y+5,y+8,0,0,0)
+    setCord(x+4,3,y,y+5,y+8,0,0,0,0,0,0,0)
+    setCord(x+5,3,y,y+5,y+8,0,0,0,0,0,0,0)
+    setCord(x+6,3,y,y+5,y+7,0,0,0,0,0,0,0)
+    setCord(x+7,3,y,y+5,y+6,0,0,0,0,0,0,0)
+    setCord(x+8,6,y,y+1,y+2,y+3,y+4,y+5,0,0,0,0)
+
 if __name__ == "__main__":
     ipcon = IPConnection()
     ls = BrickletLEDStrip(UID, ipcon)
@@ -138,72 +144,23 @@ if __name__ == "__main__":
   
     ls.register_callback(ls.CALLBACK_FRAME_RENDERED,
                          lambda w: fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b))
-    
-    setColor(255,255,255)
-    yLine(1)
-    yLine(10)
 
-    fOn()
+    counter = 0
 
     while True:
-        while puls != 0:        
-            setColor(255,0,0)
-            sym(2,2,6,7,0,0,0,0,0,0)
-            sym(3,4,5,6,7,8,0,0,0,0)
-            sym(4,4,4,5,6,7,0,0,0,0)
-            sym(5,4,3,4,5,6,0,0,0,0)
-            
-            setColor(100,10,10)
-            sym(1,2,6,7,0,0,0,0,0,0)
-            sym(2,2,5,8,0,0,0,0,0,0)
-            sym(3,2,4,9,0,0,0,0,0,0)
-            sym(4,2,3,8,0,0,0,0,0,0)
-            sym(5,2,2,7,0,0,0,0,0,0)
-
-            fOn()
-
-            sleep(60.0/puls-0.25)
-
-            setColor(100,10,10)
-            sym(2,2,6,7,0,0,0,0,0,0)
-            sym(3,4,5,6,7,8,0,0,0,0)
-            sym(4,4,4,5,6,7,0,0,0,0)
-            sym(5,4,3,4,5,6,0,0,0,0)
-            
-            setColor(255,0,0)
-            sym(1,2,6,7,0,0,0,0,0,0)
-            sym(2,2,5,8,0,0,0,0,0,0)
-            sym(3,2,4,9,0,0,0,0,0,0)
-            sym(4,2,3,8,0,0,0,0,0,0)
-            sym(5,2,2,7,0,0,0,0,0,0)
-
-            fOn()
-
-##            puls messen
-            
-            if puls > 220:
-                puls = 0
-
-        setColor(255,255,255)
-        yLine(1)
-        yLine(10)
-        setColor(12,100,200)
-        sym(1,2,2,9,0,0,0,0,0,0)
-        sym(2,4,2,3,8,9,0,0,0,0)
-        sym(3,4,3,4,7,8,0,0,0,0)
-        sym(4,4,4,5,6,7,0,0,0,0)
-        sym(5,2,5,6,0,0,0,0,0,0)
-        fOn()
-        
-        while puls == 0:
-            sleep(0.001)
-            
-##            puls messen
-
-        fClear()
-        setColor(255,255,255)
-        yLine(1)
-        yLine(10)
-
+        for i in range(24):
+            setColor(counter%256,(10*counter)%256,(i*counter)%256)
+            if i < 12:
+                fCube(i+1,1)
+                fOn()
+                setColor(0,0,0)
+                fCube(i+1,1)
+            else:
+                fCube(24-i,2)
+                fOn()
+                setColor(0,0,0)
+                fCube(24-i,2)
+            counter += 1
+                              
     raw_input("Press key to exit\n")
     ipcon.disconnect()

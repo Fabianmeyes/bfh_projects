@@ -10,7 +10,7 @@ red = []
 green = []
 blue = []
 
-for i in range (10):
+for i in range (9):
     red.append([0]*16)
     green.append([0]*16)
     blue.append([0]*16)
@@ -38,7 +38,7 @@ from tinkerforge.ip_connection import IPConnection
 from tinkerforge.bricklet_led_strip import BrickletLEDStrip
 
 def fOn():
-    for i in range (10):
+    for i in range (9):
             ls.set_rgb_values((i+11)*10, NUM_LEDS, red[i], green[i], blue[i])
 
 def setCord(fx,fanzahl,fy1,fy2,fy3,fy4,fy5,fy6,fy7,fy8,fy9,fy10):
@@ -92,7 +92,7 @@ def xLine(x):
      setCord(x,10,1,2,3,4,5,6,7,8,9,10)
 
 def yLine(y):
-    for i in range (10):
+    for i in range (9):
         setCord(i+1,1,y,0,0,0,0,0,0,0,0,0)
 
 def sym(x,anzahl,y2,y3,y4,y5,y6,y7,y8,y9):
@@ -101,7 +101,7 @@ def sym(x,anzahl,y2,y3,y4,y5,y6,y7,y8,y9):
     setCord(10-x,anzahl,y2,y3,y4,y5,y6,y7,y8,y9,0,0)
                 
 def fClear():
-    for i in range(10):
+    for i in range(9):
         setColor(0,0,0)
         xLine(i+1)
         
