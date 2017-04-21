@@ -32,14 +32,13 @@ r = 0
 g = 0
 b = 0
 
-puls = 100
-
 from tinkerforge.ip_connection import IPConnection
 from tinkerforge.bricklet_led_strip import BrickletLEDStrip
 
 def fOn():
     for i in range (20):
             ls.set_rgb_values(i*10, NUM_LEDS, red[i], green[i], blue[i])
+    sleep(0.001)
 
 def setCord(fx,fanzahl,fy1,fy2,fy3,fy4,fy5,fy6,fy7,fy8,fy9,fy10):
     global x
@@ -78,7 +77,8 @@ def setCord(fx,fanzahl,fy1,fy2,fy3,fy4,fy5,fy6,fy7,fy8,fy9,fy10):
     global y10
     y10=fy10
     
-    sleep(0.001)
+    fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b)
+
 
 def setColor(fr,fg,fb):
     global r
@@ -137,39 +137,63 @@ if __name__ == "__main__":
     rrrr = 0
     gggg = 0
     bbbb = 0
+    
     while True:
         for i in range (20):
             setColor(rrrr%256,gggg%256,bbbb%256)
             xLine(i+1)
-##            setColor(bbbb%256,gggg%256,rrrr%256)
-##            xLine(20-i)
             fOn()
 ##            setColor(0,0,0)
+##            sleep(0.001)
 ##            xLine(i+1)
-##            xLine(20-i)
             rrrr += 1
             if rrrr % 256 == 0:
                 gggg += 1
-            if gggg != 0:
+            if rrrr % 256 == 0:
                 if gggg % 256 ==0:
-                     bbbb += 1
-            
-            
-        for i in range (20):
+                    bbbb += 1
+                       
+##        for i in range (10):
 ##            setColor(rrrr%256,gggg%256,bbbb%256)
-##            xLine(i+11)
-            setColor(bbbb%256,gggg%256,rrrr%256)
+##            yLine(10-i)
+##            fOn()
+####            setColor(0,0,0)
+####            sleep(0.001)
+####            yLine(10-i)
+##            rrrr += 1
+##            if rrrr % 256 == 0:
+##                gggg += 1
+##            if gggg != 0:
+##                if gggg % 256 ==0:
+##                     bbbb += 1
+
+        for i in range (20):
+            setColor(rrrr%256,gggg%256,bbbb%256)
             xLine(20-i)
             fOn()
 ##            setColor(0,0,0)
-##            xLine(i+11)
-##            xLine(10-i)
+##            sleep(0.001)
+##            xLine(20-1)
             rrrr += 1
             if rrrr % 256 == 0:
                 gggg += 1
-            if gggg != 0:
+            if rrrr % 256 == 0:
                 if gggg % 256 ==0:
                      bbbb += 1
+                       
+##        for i in range (10):
+##            setColor(rrrr%256,gggg%256,bbbb%256)
+##            yLine(i+1)
+##            fOn()
+####            setColor(0,0,0)
+####            sleep(0.001)
+####            yLine(i+1)
+##            rrrr += 1
+##            if rrrr % 256 == 0:
+##                gggg += 1
+##            if gggg != 0:
+##                if gggg % 256 ==0:
+##                     bbbb += 1
                               
     raw_input("Press key to exit\n")
     ipcon.disconnect()

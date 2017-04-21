@@ -40,6 +40,8 @@ from tinkerforge.bricklet_led_strip import BrickletLEDStrip
 def fOn():
     for i in range (20):
             ls.set_rgb_values(i*10, NUM_LEDS, red[i], green[i], blue[i])
+    sleep(0.05)
+    
 
 def setCord(fx,fanzahl,fy1,fy2,fy3,fy4,fy5,fy6,fy7,fy8,fy9,fy10):
     global x
@@ -78,7 +80,7 @@ def setCord(fx,fanzahl,fy1,fy2,fy3,fy4,fy5,fy6,fy7,fy8,fy9,fy10):
     global y10
     y10=fy10
     
-    sleep(0.001)
+    fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b)
 
 def setColor(fr,fg,fb):
     global r
@@ -137,9 +139,6 @@ def fCyan():
 
 def fRed():
     setColor(255,0,0)
-
-def fWhite():
-    setColor(255,255,255)
 
 def outerRing(position):
     fBlue()
@@ -288,23 +287,32 @@ def write(number,x,y):
     
 
 def writeNumber(number):
+    if number > 9999:
+        number = 9999
+
+    counter = 0
+    while number >= 1000:
+        number -= 1000
+        counter += 1      
+    write(counter,15,3)
+    
     counter = 0
     while number >= 100:
         number -= 100
         counter += 1      
-    write(counter,14,4)
+    write(counter,11,3)
     
     counter = 0    
     while number >= 10:
         number -= 10
         counter += 1
-    write(counter,10,4)
+    write(counter,7,3)
     
     counter = 0    
     while number >= 1:
         number -= 1
         counter += 1
-    write(counter,6,4)
+    write(counter,3,3)
         
         
 
@@ -317,53 +325,45 @@ if __name__ == "__main__":
     fClear()
     sleep(1)
 
-    ls.set_frame_duration(1)
-  
-    ls.register_callback(ls.CALLBACK_FRAME_RENDERED,
-                         lambda w: fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b))
-
-    fWhite()
-    yLine(3)
-    xLine(3)
-    xLine(4)
-    xLine(5)
-    xLine(17)
-    xLine(18)
-
     while True:
         while puls != 0:
             for i in range (12):
-                if puls != 0:
-                    fGreen()
-                    xLine(2)
-                    xLine(19)
-                    yLine(2)
-                    yLine(9)
-                    fYellow()
-                    xLine(1)
-                    xLine(20)
-                    yLine(1)
-                    yLine(10)
-                    outerRing(((i+1)%4)+1)
-                    innerRing(((i+1)%3)+1)
+                fGreen()
+                xLine(2)
+                xLine(19)
+                yLine(2)
+                yLine(9)
+                fYellow()
+                xLine(1)
+                xLine(20)
+                yLine(1)
+                yLine(10)
+                outerRing(((i+1)%4)+1)
+                innerRing(((i+1)%3)+1)
+                fOn()
+
+            setColor(0,0,0)
+            writeNumber(puls)
+
+##          puls messen
                     
-                    fCyan()
-                    writeNumber(puls)
-                    
-                    fOn()
-                    
-                    setColor(0,0,0)
-                    writeNumber(puls)
-                    
-##                  puls messen
+            fCyan()
+            writeNumber(puls)        
+            fOn()
 
         while puls <= 0:
+
+            setColor(0,0,0)
+            writeNumber(puls)
+            
             fRed()
             writeNumber(000)
             fOn()
             setColor(0,0,0)
             writeNumber(000)
 
+            sleep(5)
+            
 ##          puls messen            
                               
     raw_input("Press key to exit\n")

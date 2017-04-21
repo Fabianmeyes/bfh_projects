@@ -32,7 +32,7 @@ r = 0
 g = 0
 b = 0
 
-puls = 100
+puls = 120
 
 from tinkerforge.ip_connection import IPConnection
 from tinkerforge.bricklet_led_strip import BrickletLEDStrip
@@ -78,7 +78,7 @@ def setCord(fx,fanzahl,fy1,fy2,fy3,fy4,fy5,fy6,fy7,fy8,fy9,fy10):
     global y10
     y10=fy10
     
-    sleep(0.001)
+    fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b)
 
 def setColor(fr,fg,fb):
     global r
@@ -133,11 +133,6 @@ if __name__ == "__main__":
 
     fClear()
     sleep(1)
-
-    ls.set_frame_duration(1)
-  
-    ls.register_callback(ls.CALLBACK_FRAME_RENDERED,
-                         lambda w: fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b))
     
     setColor(255,255,255)
 
@@ -162,8 +157,8 @@ if __name__ == "__main__":
             sym(5,2,2,7,0,0,0,0,0,0)
 
             fOn()
-
-            sleep(60.0/puls-0.25)
+            
+            sleep(54.0/puls)
 
             setColor(100,10,10)
             sym(2,2,6,7,0,0,0,0,0,0)
@@ -178,12 +173,10 @@ if __name__ == "__main__":
             sym(4,2,3,8,0,0,0,0,0,0)
             sym(5,2,2,7,0,0,0,0,0,0)
 
-            fOn()
+            fOn()           
+            sleep(6.0/puls)
 
 ##            puls messen
-
-            if puls > 220:
-                puls = 0
 
         setColor(255,255,255)
         yLine(1)

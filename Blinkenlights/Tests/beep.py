@@ -38,6 +38,7 @@ from tinkerforge.bricklet_led_strip import BrickletLEDStrip
 def fOn():
     for i in range (20):
             ls.set_rgb_values((i)*10, NUM_LEDS, red[i], green[i], blue[i])
+    sleep(0.001)
 
 def setCord(fx,fanzahl,fy1,fy2,fy3,fy4,fy5,fy6,fy7,fy8,fy9,fy10):
     global x
@@ -76,7 +77,7 @@ def setCord(fx,fanzahl,fy1,fy2,fy3,fy4,fy5,fy6,fy7,fy8,fy9,fy10):
     global y10
     y10=fy10
     
-    sleep(0.001)
+    fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b)
 
 def putDot(x,y):
     setCord(x,1,y,0,0,0,0,0,0,0,0,0)
@@ -85,7 +86,7 @@ def deleteDot(x,y):
     saveR = r
     saveG = g
     saveB = b
-    setColor(0,0,0)
+    setColor(10-10.0*g/(r+g),10.0*g/(r+g),0)
     putDot(x,y)
     setColor(saveR,saveG,saveB)
 
@@ -111,7 +112,8 @@ def symTripple(x,anzahl,y2,y3,y4,y5,y6,y7,y8,y9):
                 
 def fClear():
     for i in range(20):
-        ls.set_rgb_values(10*i, NUM_LEDS, [0]*16, [0]*16, [0]*16)
+        setColor(0,0,0)
+        xLine(i+1)
 
 def fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b):
    
@@ -142,12 +144,6 @@ if __name__ == "__main__":
 
     fClear()
     sleep(1)
-
-    ls.set_frame_duration(1)
-  
-    ls.register_callback(ls.CALLBACK_FRAME_RENDERED,
-                         lambda w: fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b))
-
     
     setColor(255,255,255)
     
@@ -215,6 +211,8 @@ if __name__ == "__main__":
         deleteDot(4,6)
         putDot(1,6)
 
+        
+    fClear()
     setColor(255,0,0)
     yLine(6)
     yLine(5)
