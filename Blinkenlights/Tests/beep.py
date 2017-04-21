@@ -32,14 +32,16 @@ r = 0
 g = 0
 b = 0
 
+puls = 100
+
 from tinkerforge.ip_connection import IPConnection
 from tinkerforge.bricklet_led_strip import BrickletLEDStrip
 
 def fOn():
     for i in range (20):
             ls.set_rgb_values((i)*10, NUM_LEDS, red[i], green[i], blue[i])
-    sleep(0.001)
-
+    sleep(1000.0/25/16/puls)
+          
 def setCord(fx,fanzahl,fy1,fy2,fy3,fy4,fy5,fy6,fy7,fy8,fy9,fy10):
     global x
     x=fx
@@ -81,14 +83,6 @@ def setCord(fx,fanzahl,fy1,fy2,fy3,fy4,fy5,fy6,fy7,fy8,fy9,fy10):
 
 def putDot(x,y):
     setCord(x,1,y,0,0,0,0,0,0,0,0,0)
-
-def deleteDot(x,y):
-    saveR = r
-    saveG = g
-    saveB = b
-    setColor(10-10.0*g/(r+g),10.0*g/(r+g),0)
-    putDot(x,y)
-    setColor(saveR,saveG,saveB)
 
 def setColor(fr,fg,fb):
     global r
@@ -134,7 +128,15 @@ def fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b):
         red[g_index-1][r_index] = r
         green[g_index-1][r_index] = g
         blue[g_index-1][r_index] = b
-    fOn()
+
+def fGreen(indicator):
+    setColor(0,25,0)
+    if indicator % 32 >= 14:
+        if indicator % 32 <= 32-14:
+            if indicator % 32 < 16:
+                setColor(0,14*(indicator%16+1)-100,0)
+            else:
+                setColor(0,14*16-15*(indicator%16+1)-100,0)
 
 if __name__ == "__main__":
     ipcon = IPConnection()
@@ -144,80 +146,89 @@ if __name__ == "__main__":
 
     fClear()
     sleep(1)
-    
-    setColor(255,255,255)
-    
-    yLine(1)
-    yLine(10)
 
-    fOn()
-    
-    setColor(10,255,25)
-    
-    for i in range(255):
-
-        setColor(i,255-i,0)
-
-        deleteDot(3,6)
-        putDot(20,5)
-        deleteDot(2,6)
-        putDot(19,5)
-        deleteDot(1,6)
-        putDot(18,5)
-        deleteDot(20,5)
-        putDot(17,5)
-        deleteDot(19,5)
-        putDot(16,5)
-        deleteDot(18,5)
-        putDot(15,5)
-        deleteDot(17,5)
-        putDot(14,5)
-        deleteDot(16,5)
-        putDot(13,6)
-        deleteDot(15,5)
-        putDot(13,7)
-        deleteDot(14,5)
-        putDot(12,8)
-        deleteDot(13,6)
-        putDot(12,9)
-        deleteDot(13,7)
-        putDot(11,7)
-        deleteDot(12,9)
-        putDot(11,6)
-        deleteDot(12,8)
-        putDot(10,5)
-        deleteDot(11,7)
-        putDot(10,4)
-        deleteDot(11,6)
-        putDot(9,3)
-        deleteDot(10,5)
-        putDot(9,2)
-        deleteDot(10,4)
-        putDot(8,4)
-        deleteDot(9,2)
-        putDot(8,5)
-        deleteDot(9,3)
-        putDot(7,6)
-        deleteDot(8,4)
-        putDot(6,6)
-        deleteDot(8,5)
-        putDot(5,6)
-        deleteDot(7,6)
-        putDot(4,6)
-        deleteDot(6,6)
-        putDot(3,6)
-        deleteDot(5,6)
-        putDot(2,6)
-        deleteDot(4,6)
-        putDot(1,6)
-
+    while True:
         
-    fClear()
-    setColor(255,0,0)
-    yLine(6)
-    yLine(5)
+        setColor(255,255,255)
+        
+        yLine(1)
+        yLine(10)
 
-    
+        fOn()
+        
+        counter = 0
+
+        while puls !=0:
+
+            fGreen(counter)
+            putDot(20,5)
+            fGreen(counter-1)
+            putDot(19,5)
+            fGreen(counter-2)
+            putDot(18,5)
+            fGreen(counter-3)
+            putDot(17,5)
+            fGreen(counter-4)
+            putDot(16,5)
+            fGreen(counter-5)
+            putDot(15,5)
+            fGreen(counter-6)
+            putDot(14,5)
+            fGreen(counter-7)
+            putDot(13,6)
+            fGreen(counter-8)
+            putDot(13,7)
+            fGreen(counter-9)
+            putDot(12,8)
+            fGreen(counter-10)
+            putDot(12,9)
+            fGreen(counter-11)
+            putDot(11,7)
+            fGreen(counter-12)
+            putDot(11,6)
+            fGreen(counter-13)
+            putDot(10,5)
+            fGreen(counter-14)
+            putDot(10,4)
+            fGreen(counter-15)
+            putDot(9,3)
+            fGreen(counter-16)
+            putDot(9,2)
+            fGreen(counter-17)
+            putDot(8,4)
+            fGreen(counter-18)
+            putDot(8,5)
+            fGreen(counter-19)
+            putDot(7,6)
+            fGreen(counter-20)
+            putDot(6,6)
+            fGreen(counter-21)
+            putDot(5,6)
+            fGreen(counter-22)
+            putDot(4,6)
+            fGreen(counter-23)
+            putDot(3,6)
+            fGreen(counter-24)
+            putDot(2,6)
+            fGreen(counter-25)
+            putDot(1,6)
+            fOn()
+
+            counter += 1
+            
+##          puls messen
+        
+        fClear()
+        setColor(255,0,0)
+        yLine(6)
+        yLine(5)
+
+        fOn()
+
+        while puls == 0:
+            sleep(0.001)
+
+##          puls messen
     
     raw_input("Press key to exit\n")
     ipcon.disconnect()

@@ -31,14 +31,57 @@ y10 = 0
 r = 0
 g = 0
 b = 0
+Red     = 200
+Green   = 0
+Blue    = 0
+indicator = 0
+
+speed = 1000
 
 from tinkerforge.ip_connection import IPConnection
 from tinkerforge.bricklet_led_strip import BrickletLEDStrip
 
+def fTime():
+    
+    global Red
+    global Green
+    global Blue
+    global indicator
+
+    indicator = counter%700+1
+
+    if indicator < 100:
+        Blue = 0
+
+    if indicator < 200:
+        if indicator > 100:
+            Green = 100
+
+    if indicator < 300:
+        if indicator > 200:
+            Green = 200
+
+    if indicator < 400:
+        if indicator > 300:
+            Red = 0
+            
+    if indicator < 500:
+        if indicator > 400:
+            Blue = 200
+
+    if indicator < 600:
+        if indicator > 500:
+            Green = 0
+
+    if indicator < 700:
+        if indicator > 600:
+            Red = 200
+
 def fOn():
     for i in range (20):
             ls.set_rgb_values(i*10, NUM_LEDS, red[i], green[i], blue[i])
-    sleep(0.001)
+    sleep(1.0/speed)
+    fTime()
     
 
 def setCord(fx,fanzahl,fy1,fy2,fy3,fy4,fy5,fy6,fy7,fy8,fy9,fy10):
@@ -120,11 +163,11 @@ def fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b):
         green[g_index-1][r_index] = g
         blue[g_index-1][r_index] = b
 
-def fRed(color):
+def fColor(color):
     if color%100 < 50:
-        setColor(5*(color%50)+5,0,0)
+        setColor(Red/51*(color%50)+5,Green/51*(color%50)+5,Blue/51*(color%50)+5)
     else:
-        setColor(5*(50.0-(color%50+1))+5,0,0)
+        setColor(Red/51*(50.0-(color%50+1))+5,Green/51*(50.0-(color%50+1))+5,Blue/51*(50.0-(color%50+1))+5)
 
 def fRing(position):
     position = (position%4) + 1
@@ -203,6 +246,8 @@ if __name__ == "__main__":
     sleep(1)
     fClear()
 
+    global counter
+
     counter = 0
 
     for i in range(20):
@@ -210,15 +255,15 @@ if __name__ == "__main__":
         xLine(i+1)
 
     while True:
-        fRed(counter-75)
+        fColor(counter-75)
         fRing(4)
-        fRed(counter-50)
+        fColor(counter-50)
         fRing(3)
-        fRed(counter-25)
+        fColor(counter-25)
         fRing(2)
-        fRed(counter)
+        fColor(counter)
         fRing(1)
-        fRed(counter)
+        fColor(counter)
         onAir()
         fOn()
         counter += 1

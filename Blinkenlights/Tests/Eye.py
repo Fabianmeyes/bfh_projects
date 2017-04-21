@@ -39,7 +39,7 @@ indicatorG = 0
 indicatorB = 0
 
 global speed
-speed = 1000
+speed = 100
 
 from tinkerforge.ip_connection import IPConnection
 from tinkerforge.bricklet_led_strip import BrickletLEDStrip
@@ -47,6 +47,7 @@ from tinkerforge.bricklet_led_strip import BrickletLEDStrip
 def fOn():
     for i in range (20):
             ls.set_rgb_values((i)*10, NUM_LEDS, red[i], green[i], blue[i])
+    fTime()
     sleep(1.0/speed)
 
 def setCord(fx,fanzahl,fy1,fy2,fy3,fy4,fy5,fy6,fy7,fy8,fy9,fy10):
@@ -335,24 +336,33 @@ def fTime():
     global indicatorB
 
     if indicatorR%510 < 255:
-        rrrr += 1
+        rrrr += 5
     else:
-        rrrr -= 1
-    indicatorR += 1
+        rrrr -= 5
+    indicatorR += 5
 
-    if rrrr == 255:
+    if rrrr == indicatorR%255==0:
         if indicatorG%510 < 255:
-            gggg += 1
+            gggg += 5
         else:
-            gggg -= 1
-        indicatorG += 1
+            gggg -= 5
+        indicatorG += 5
         
-        if gggg == 255:
+        if gggg == indicatorG%255==0:
             if indicatorB%510 < 255:
-                bbbb += 1
+                bbbb += 5
             else:
-                bbbb -= 1
-            indicatorB += 1        
+                bbbb -= 5
+            indicatorB += 5
+
+    setColor(rrrr,0,0)
+    symDiCord(1,1,10)
+
+    setColor(0,gggg,0)
+    symDiCord(2,1,10)
+
+    setColor(0,0,bbbb)
+    symDiCord(3,1,10)
     
 if __name__ == "__main__":
     ipcon = IPConnection()
@@ -362,11 +372,6 @@ if __name__ == "__main__":
 
     fClear()
     sleep(1)
-
-    ls.set_frame_duration(1000.0/speed)
-  
-    ls.register_callback(ls.CALLBACK_FRAME_RENDERED,
-                     lambda w: fTime())
 
     while True:
         for i in range(3,18):

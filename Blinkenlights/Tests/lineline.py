@@ -134,66 +134,64 @@ if __name__ == "__main__":
     ls.register_callback(ls.CALLBACK_FRAME_RENDERED,
                          lambda w: fLight(x,anzahl,y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,r,g,b))
 
-    rrrr = 0
-    gggg = 0
-    bbbb = 0
+    rrrr = 0.0
+    gggg = 0.0
+    bbbb = 0.0
+    indicatorR = 0
+    indicatorG = 0
+    indicatorB = 0
     
     while True:
         for i in range (20):
             setColor(rrrr%256,gggg%256,bbbb%256)
             xLine(i+1)
             fOn()
-##            setColor(0,0,0)
-##            sleep(0.001)
-##            xLine(i+1)
-            rrrr += 1
-            if rrrr % 256 == 0:
-                gggg += 1
-            if rrrr % 256 == 0:
-                if gggg % 256 ==0:
-                    bbbb += 1
-                       
-##        for i in range (10):
-##            setColor(rrrr%256,gggg%256,bbbb%256)
-##            yLine(10-i)
-##            fOn()
-####            setColor(0,0,0)
-####            sleep(0.001)
-####            yLine(10-i)
-##            rrrr += 1
-##            if rrrr % 256 == 0:
-##                gggg += 1
-##            if gggg != 0:
-##                if gggg % 256 ==0:
-##                     bbbb += 1
+
+            if indicatorR%510 < 255:
+                rrrr += 5
+            else:
+                rrrr -= 5
+            indicatorR += 5
+
+            if rrrr == indicatorR%255==0:
+                if indicatorG%510 < 255:
+                    gggg += 5
+                else:
+                    gggg -= 5
+                indicatorG += 5
+                
+                if gggg == indicatorG%255==0:
+                    if indicatorB%510 < 255:
+                        bbbb += 5
+                    else:
+                        bbbb -= 5
+                    indicatorB += 5
+
 
         for i in range (20):
             setColor(rrrr%256,gggg%256,bbbb%256)
             xLine(20-i)
             fOn()
-##            setColor(0,0,0)
-##            sleep(0.001)
-##            xLine(20-1)
-            rrrr += 1
-            if rrrr % 256 == 0:
-                gggg += 1
-            if rrrr % 256 == 0:
-                if gggg % 256 ==0:
-                     bbbb += 1
-                       
-##        for i in range (10):
-##            setColor(rrrr%256,gggg%256,bbbb%256)
-##            yLine(i+1)
-##            fOn()
-####            setColor(0,0,0)
-####            sleep(0.001)
-####            yLine(i+1)
-##            rrrr += 1
-##            if rrrr % 256 == 0:
-##                gggg += 1
-##            if gggg != 0:
-##                if gggg % 256 ==0:
-##                     bbbb += 1
+
+            if indicatorR%510 < 255:
+                rrrr += 5
+            else:
+                rrrr -= 5
+            indicatorR += 5
+
+            if rrrr == indicatorR%255==0:
+                if indicatorG%510 < 255:
+                    gggg += 5
+                else:
+                    gggg -= 5
+                indicatorG += 5
+                
+                if gggg == indicatorG%255==0:
+                    if indicatorB%510 < 255:
+                        bbbb += 5
+                    else:
+                        bbbb -= 5
+                    indicatorB += 5
                               
     raw_input("Press key to exit\n")
     ipcon.disconnect()
